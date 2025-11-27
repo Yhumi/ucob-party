@@ -1,0 +1,171 @@
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+
+@tailwind utilities;
+
+:root {
+  --Background: #1b1b1f;
+
+  --PF-Dark-Base: #313031;
+  --PF-Dark-Highlight: #3c3b3c;
+
+  --PF-Border: #947d5a;
+
+  --DutyTitle-Color: #63a2c0;
+
+  --DutyTags-Completion: #4bb7ce;
+  --DutyTags-Practice: #30c185;
+  --DutyTags-Loot: #dda837;
+
+  --DutyDescription-Color: #989898;
+}
+
+html {background-color: var(--Background);} 
+html, body { height: 100%; min-height: 100vh; }
+
+/* Fallback to fully center the first wrapper in case Tailwind utilities are not present */
+.page-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.pf-tile {
+  width: 75vw;
+  padding: 1rem;
+  background-color: var(--PF-Dark-Base);
+  
+  border: 2px solid var(--PF-Border);
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pf-listings-container {
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.highlighted-row {
+  background-color: var(--PF-Dark-Highlight);
+}
+
+.listing-row {
+  display: flex;
+  flex-direction: row;
+
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  justify-content: space-between;
+  align-items: start;
+}
+
+.no-listings {
+  color: var(--DutyDescription-Color);
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.duty-info {
+  display: flex;
+  flex-direction: column;
+
+  width: 25vw;
+  max-width: 25vw;
+  overflow-x: wrap;
+}
+
+.slots {
+  display: flex;
+  flex-direction: row;
+
+  padding: 0.6rem;
+}
+
+.slot-image {
+  max-height: 56px;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  width: 50vw;
+  max-width: 50vw;
+}
+
+.duty-title {
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--DutyTitle-Color);
+}
+
+.tag-size {
+  font-size: 1.25rem;
+}
+
+.duty-description {
+  font-size: 1.1rem;
+  color: var(--DutyDescription-Color);
+}
+
+.loot {
+  color: var(--DutyTags-Loot);
+}
+
+.completion {
+  color: var(--DutyTags-Completion);
+}
+
+.practice {
+  color: var(--DutyTags-Practice);
+}
+
+.full-height {
+  min-height: 100vh;
+}
+
+@layer base {
+  
+  
+  #table-header {
+    height: -moz-available;
+    height: -webkit-fill-available;
+    height: fill-available;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 1rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}

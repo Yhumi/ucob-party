@@ -12,5 +12,8 @@
 #!.yarn/cache
 .pnp.*
 
-#Node 
+# Node 
 node_modules/
+
+# Environment
+.env
