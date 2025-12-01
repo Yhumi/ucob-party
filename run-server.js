@@ -1,6 +1,5 @@
 import express from 'express';
 import { handler as ssrHandler } from './dist/server/entry.mjs';
-import cors from 'cors';
 
 const app = express();
 // Change this based on your astro.config.mjs, `base` option.
