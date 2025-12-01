@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PF from '../components/PF';
 import Control from '../components/Control';
+import Footer from '../components/Footer'
 
 const pageParam = Astro.url.searchParams.get('page') || '1';
 let page = Number(pageParam);
@@ -14,4 +15,5 @@ if (Number.isNaN(page)) page = 1;
 <Layout>
   <Control client:load />
   <PF client:load page={page} />
+  <Footer />
 </Layout>

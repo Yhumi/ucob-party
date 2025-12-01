@@ -200,6 +200,25 @@ html, body { height: 100%; min-height: 100dvh; font-family: Geneva, Verdana, san
   font-size: 1.1rem;
 }
 
+.footer-panel-container {
+  width: 100%;
+  justify-content: flex-end;
+  align-items: right;
+
+  display: flex;
+  flex-direction: row;
+  padding-top: 0.3rem;
+}
+
+.footer-text {
+  font-size: 0.8rem;
+  font-weight: lighter;
+  font-style: italic;
+  opacity: 0.5;
+
+  color: var(--DutyDescription-Color);
+}
+
 .cob-enjoyers-base {
   background-color: var(--PF-Dark-Base-CobEnjoyer) !important;
 }
