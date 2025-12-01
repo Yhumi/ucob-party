@@ -110,6 +110,33 @@ const pfComponent = ({ page } : Props) => {
     }).catch(err => {
       console.log(err?.message ?? err?.error)
     });
+
+    const interval = setInterval(() => {
+      console.log("Reloading PF listings...");
+      fetch(`/api/getlistings`, {
+        method: "GET",
+      }).then(x => {
+        console.log(x);
+        string = "Fetched";
+        x.json().then((y: { success: boolean; data: PageResponse<PFListing> }) => {
+          string = "Parsed";
+          console.log(y.data);
+
+          let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+
+          setLastFetch(curFetchTime);
+          setAllListings(y.data);
+          setListings(dateFilteredListings);
+        })
+      }).catch(err => {
+        console.log(err?.message ?? err?.error)
+      });
+    }, 3 * 60 * 1000);
+    
+    return () => {
+      clearInterval(interval);
+    }
+
   }, [knownPFHosts, showCobEnjoyers, showCobFriends, showOthers]);
 
   return (

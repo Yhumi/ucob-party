@@ -202,8 +202,8 @@ html, body { height: 100%; min-height: 100dvh; font-family: Geneva, Verdana, san
 
 .footer-panel-container {
   width: 100%;
-  justify-content: flex-end;
-  align-items: right;
+  justify-content: space-between;
+  align-items: center;
 
   display: flex;
   flex-direction: row;
