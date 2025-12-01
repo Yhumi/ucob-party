@@ -3,7 +3,7 @@ import { HostType, JobIcons, Role, type KnownPFHosts, type PageResponse, type PF
 import { Tooltip } from 'react-tooltip'
 import { useStore } from '@nanostores/react';
 
-import { showCobEnjoyersState, showCobFriendsState, showOthersState } from "../services/controlStore";
+import { showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
 
 //#region Roles
 import tank from "../assets/roles/tank.png";
@@ -67,6 +67,8 @@ const pfComponent = ({ page } : Props) => {
   const showCobFriends = useStore(showCobFriendsState);
   const showOthers = useStore(showOthersState); 
 
+  const showHighlighting = useStore(showHighlightingState);
+
   useEffect(() => {
     fetch(`/api/knownpfhosts`, {
     method: "GET",
@@ -124,6 +126,18 @@ const pfComponent = ({ page } : Props) => {
           else if (listing.tags.includes("Practice")) classStringCol += " practice";
           else if (listing.tags.includes("Loot")) classStringCol += " loot";
           else classStringCol += " none";
+
+          if (showHighlighting) {
+            if (knownPFHosts.filter(x => x.HostType == HostType.CobEnjoyer).map(x => x.Username).includes(listing.creator)) {
+              if (!isOdd) classString = "cob-enjoyers-highlight"
+              else classString = "cob-enjoyers-base"
+            }
+
+            if (knownPFHosts.filter(x => x.HostType == HostType.CobFriend).map(x => x.Username).includes(listing.creator)) {
+              if (!isOdd) classString = "cob-friend-highlight"
+              else classString = "cob-friend-base"
+            }
+          }
 
           return <div key={listing.creator} className={classString}>
             <div className="listing-row">

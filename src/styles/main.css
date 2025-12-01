@@ -9,6 +9,12 @@
   --PF-Dark-Base: #313031;
   --PF-Dark-Highlight: #3c3b3c;
 
+  --PF-Dark-Base-CobEnjoyer: #6f536f;
+  --PF-Dark-Highlight-CobEnjoyer: #775b77;
+
+  --PF-Dark-Base-CobFriend: #5a6c6e;
+  --PF-Dark-Highlight-CobFriend: #617475;
+
   --PF-Border: #947d5a;
 
   --DutyTitle-Color: #63a2c0;
@@ -23,7 +29,7 @@
 }
 
 html {background-color: var(--Background);} 
-html, body { height: 100%; min-height: 100vh; font-family: Geneva, Verdana, sans-serif; }
+html, body { height: 100%; min-height: 100dvh; font-family: Geneva, Verdana, sans-serif; }
 
 /* Fallback to fully center the first wrapper in case Tailwind utilities are not present */
 .page-center {
@@ -52,7 +58,7 @@ html, body { height: 100%; min-height: 100vh; font-family: Geneva, Verdana, sans
 
 .pf-listings-container {
   width: 100%;
-  max-height: 80vh;
+  max-height: 80dvh;
   overflow-y: auto;
 
   display: flex;
@@ -192,6 +198,22 @@ html, body { height: 100%; min-height: 100vh; font-family: Geneva, Verdana, sans
 .form-control-text { 
   color: var(--DutyMeta-Color);
   font-size: 1.1rem;
+}
+
+.cob-enjoyers-base {
+  background-color: var(--PF-Dark-Base-CobEnjoyer) !important;
+}
+
+.cob-enjoyers-highlight {
+  background-color: var(--PF-Dark-Highlight-CobEnjoyer) !important;
+}
+
+.cob-friend-base {
+  background-color: var(--PF-Dark-Base-CobFriend) !important;
+}
+
+.cob-friend-highlight {
+  background-color: var(--PF-Dark-Highlight-CobFriend) !important;
 }
 
 @layer base {
