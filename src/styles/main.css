@@ -18,10 +18,12 @@
   --DutyTags-Loot: #dda837;
 
   --DutyDescription-Color: #989898;
+
+  --DutyMeta-Color: #b8cfcb;
 }
 
 html {background-color: var(--Background);} 
-html, body { height: 100%; min-height: 100vh; }
+html, body { height: 100%; min-height: 100vh; font-family: Geneva, Verdana, sans-serif; }
 
 /* Fallback to fully center the first wrapper in case Tailwind utilities are not present */
 .page-center {
@@ -85,8 +87,8 @@ html, body { height: 100%; min-height: 100vh; }
   display: flex;
   flex-direction: column;
 
-  width: 25vw;
-  max-width: 25vw;
+  width: 50vw;
+  max-width: 50vw;
   overflow-x: wrap;
 }
 
@@ -94,7 +96,8 @@ html, body { height: 100%; min-height: 100vh; }
   display: flex;
   flex-direction: row;
 
-  padding: 0.6rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
 }
 
 .slot-image {
@@ -107,8 +110,12 @@ html, body { height: 100%; min-height: 100vh; }
   justify-content: space-between;
   align-items: flex-end;
 
-  width: 50vw;
-  max-width: 50vw;
+  align-self: stretch;
+
+  width: 25vw;
+  max-width: 25vw;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 
 .duty-title {
@@ -138,8 +145,53 @@ html, body { height: 100%; min-height: 100vh; }
   color: var(--DutyTags-Practice);
 }
 
+.none {
+  color: var(--DutyDescription-Color);
+}
+
 .full-height {
   min-height: 100vh;
+}
+
+.meta-text {
+  font-size: 1.25rem;
+  color: var(--DutyMeta-Color);
+}
+
+.meta-icon {
+  color: var(--DutyMeta-Color);
+}
+
+.icon-row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.control-panel-container {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.form-control-text { 
+  color: var(--DutyMeta-Color);
+  font-size: 1.1rem;
 }
 
 @layer base {

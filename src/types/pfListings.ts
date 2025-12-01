@@ -77,6 +77,16 @@ export enum Role {
   DPS = 3
 }
 
+export type KnownPFHosts = {
+  Username : string;
+  HostType : HostType;
+}
+
+export enum HostType {
+  CobEnjoyer,
+  CobFriend
+}
+
 export const JobIcons : Record<number, ImageMetadata> = {
   0: fsh,
   1: gnb,

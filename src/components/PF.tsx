@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { JobIcons, Role, type PageResponse, type PFListing } from "../types/pfListings";
-import { set } from "astro:schema";
+import { HostType, JobIcons, Role, type KnownPFHosts, type PageResponse, type PFListing } from "../types/pfListings";
+import { Tooltip } from 'react-tooltip'
+import { useStore } from '@nanostores/react';
+
+import { showCobEnjoyersState, showCobFriendsState, showOthersState } from "../services/controlStore";
 
 //#region Roles
 import tank from "../assets/roles/tank.png";
@@ -13,56 +16,99 @@ import healer_dps from "../assets/roles/healer_dps.png";
 import dowm from "../assets/roles/dowm.png";
 //#endregion
 
+import creator from "../assets/icons/creator.svg";
+import remaining from "../assets/icons/remaining.svg";
+import updated from "../assets/icons/updated.svg";
+import server from "../assets/icons/server.svg";
+
+
 interface Props { page: number }
 let string : string = "Opened";
 
-const reloadTable = (setListings : React.Dispatch<React.SetStateAction<PageResponse<PFListing>>>) => {
-  fetch(`http://api.miyei.me:7050/listings/ucob`, {
-    method: "GET",
-  }).then(x => {
-    console.log(x);
-    string = "Fetched";
-    x.json().then(y => {
-      string = "Parsed";
-      console.log(y);
-      setListings(filterListings(y));
-    })
-  }).catch(err => {
-    console.log(err?.message ?? err?.error)
-  });
-}
+const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers) : PageResponse<PFListing> => {
+  let dateFiltered : PageResponse<PFListing> = { data: [] };
 
-const filterListings = (listings: PageResponse<PFListing>) : PageResponse<PFListing> => {
-  let filtered : PageResponse<PFListing> = { data: [] };
+  //Filter out listings older than 10 minutes
   listings.data.forEach(listing => {
     if (listing.updated.includes("minutes") && listing.updated.split(" ")[0] as unknown as number <= 10) {
-      filtered.data.push(listing);
+      dateFiltered.data.push(listing);
     }
 
-    if (!listing.updated.includes("hours") && !listing.updated.includes("minutes")) {
-      filtered.data.push(listing);
+    if (!listing.updated.includes("hours") && !listing.updated.includes("hour") && !listing.updated.includes("minutes")) {
+      dateFiltered.data.push(listing);
     }
   });
 
-  return filtered;
+  console.log(knownPFHosts);
+
+  let hostFiltered : PageResponse<PFListing> = { data: [] };
+  if (showCobEnjoyers) {
+    hostFiltered.data.push(...dateFiltered.data.filter(x => knownPFHosts.filter(x => x.HostType == HostType.CobEnjoyer).map(x => x.Username).includes(x.creator)));
+  }
+
+  if (showCobFriends) {
+    hostFiltered.data.push(...dateFiltered.data.filter(x => knownPFHosts.filter(x => x.HostType == HostType.CobFriend).map(x => x.Username).includes(x.creator)));
+  }
+
+  if (showOthers) {
+    hostFiltered.data.push(...dateFiltered.data.filter(x => !knownPFHosts.filter(x => x.HostType == HostType.CobEnjoyer).map(x => x.Username).includes(x.creator) && !knownPFHosts.filter(x => x.HostType == HostType.CobFriend).map(x => x.Username).includes(x.creator)));
+  }
+
+  return hostFiltered;
 }
 
 const pfComponent = ({ page } : Props) => {
+  const [allListings, setAllListings] = useState<PageResponse<PFListing> | null>(null);
   const [listings, setListings] = useState<PageResponse<PFListing> | null>(null);
-  const [domLoaded, setDomLoaded] = useState(false);
-  const [stringState, setStringState] = useState(string);
+  const [knownPFHosts, setKnownPFHosts] = useState<KnownPFHosts[]>([]);
+  const [lastFetch, setLastFetch] = useState<number>(0);
+
+  const showCobEnjoyers = useStore(showCobEnjoyersState);
+  const showCobFriends = useStore(showCobFriendsState);
+  const showOthers = useStore(showOthersState); 
 
   useEffect(() => {
-    try {
-      setStringState("Loading");
-      setDomLoaded(true);
-      reloadTable(setListings);
-    } catch (ex: unknown) {
-      if (ex instanceof Error) {
-        console.log(ex.message)
-      }
-    }
-  }, []);
+    fetch(`/api/knownpfhosts`, {
+    method: "GET",
+    }).then(pfHostsResp => {
+      pfHostsResp.json().then((hostsJson: { success: boolean; data: KnownPFHosts[] }) => {
+        console.log("Setting known PF Hosts:", hostsJson);
+        setKnownPFHosts(hostsJson.data);
+      })
+    });
+  }, [])
+
+  useEffect(() => {
+    let curFetchTime = new Date().getTime();
+
+    if (knownPFHosts.length == 0) return;
+    if (curFetchTime - lastFetch < 30 * 1000) {
+      console.log("Fetched recently, just updating filtering.")
+      let dateFilteredListings = dateFilterListings(allListings, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+      setListings(dateFilteredListings);
+      return;
+    };
+
+    console.log("Reloading PF listings...");
+    fetch(`http://api.miyei.me:7050/listings/ucob`, {
+      method: "GET",
+    }).then(x => {
+      console.log(x);
+      string = "Fetched";
+      x.json().then(y => {
+        string = "Parsed";
+        console.log(y);
+
+        let dateFilteredListings = dateFilterListings(y, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+
+        setLastFetch(curFetchTime);
+        setAllListings(y);
+        setListings(dateFilteredListings);
+      })
+    }).catch(err => {
+      console.log(err?.message ?? err?.error)
+    });
+  }, [knownPFHosts, showCobEnjoyers, showCobFriends, showOthers]);
 
   return (
     <div className="pf-listings-container">
@@ -77,6 +123,7 @@ const pfComponent = ({ page } : Props) => {
           if (listing.tags.includes("Completion")) classStringCol += " completion";
           else if (listing.tags.includes("Practice")) classStringCol += " practice";
           else if (listing.tags.includes("Loot")) classStringCol += " loot";
+          else classStringCol += " none";
 
           return <div key={listing.creator} className={classString}>
             <div className="listing-row">
@@ -138,16 +185,20 @@ const pfComponent = ({ page } : Props) => {
               </div>
 
               <div className="meta-info">
-                <h5 className="">{listing.creator}</h5>
-                <h5 className="">{listing.datacenter}</h5>
-                <h5 className="">{listing.expires}</h5>
-                <h5 className="">{listing.updated}</h5>
+                <span className="icon-row"><h5 className="meta-text">{listing.creator}</h5><img src={creator.src} alt="Creator Icon" data-tooltip-id="creator" data-tooltip-content="Creator" data-tooltip-place="right" className="meta-icon" /></span>
+                <Tooltip id="creator" />
+                <span className="icon-row"><h5 className="meta-text">{listing.datacenter}</h5><img src={server.src} alt="Server Icon" data-tooltip-id="datacenter" data-tooltip-content="Datacenter" data-tooltip-place="right" className="meta-icon" /></span>
+                <Tooltip id="datacenter" />
+                <span className="icon-row"><h5 className="meta-text">{listing.expires}</h5><img src={remaining.src} alt="Remaining Icon" data-tooltip-id="expires" data-tooltip-content="Expires" data-tooltip-place="right" className="meta-icon" /></span>
+                <Tooltip id="expires" />
+                <span className="icon-row"><h5 className="meta-text">{listing.updated}</h5><img src={updated.src} alt="Updated Icon" data-tooltip-id="updated" data-tooltip-content="Updated" data-tooltip-place="right" className="meta-icon" /></span>
+                <Tooltip id="updated" />
               </div>
             </div>
           </div>
         })
       }
-      { domLoaded && (listings == null || listings?.data.length === 0) && <h2 className="no-listings">No recent listings found. :(<br />Go make one!</h2> }
+      { (listings == null || listings?.data.length === 0) && <h2 className="no-listings">No recent listings found. :(<br />Go make one!</h2> }
     </div>
   )
 }
