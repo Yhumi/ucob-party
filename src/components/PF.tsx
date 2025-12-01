@@ -82,7 +82,7 @@ const pfComponent = ({ page } : Props) => {
     let curFetchTime = new Date().getTime();
 
     if (knownPFHosts.length == 0) return;
-    if (curFetchTime - lastFetch < 30 * 1000) {
+    if (curFetchTime - lastFetch < 15 * 1000) {
       console.log("Fetched recently, just updating filtering.")
       let dateFilteredListings = dateFilterListings(allListings, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
       setListings(dateFilteredListings);
@@ -90,19 +90,19 @@ const pfComponent = ({ page } : Props) => {
     };
 
     console.log("Reloading PF listings...");
-    fetch(`http://api.miyei.me:7050/listings/ucob`, {
+    fetch(`/api/getlistings`, {
       method: "GET",
     }).then(x => {
       console.log(x);
       string = "Fetched";
-      x.json().then(y => {
+      x.json().then((y: { success: boolean; data: PageResponse<PFListing> }) => {
         string = "Parsed";
-        console.log(y);
+        console.log(y.data);
 
-        let dateFilteredListings = dateFilterListings(y, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+        let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
 
         setLastFetch(curFetchTime);
-        setAllListings(y);
+        setAllListings(y.data);
         setListings(dateFilteredListings);
       })
     }).catch(err => {
