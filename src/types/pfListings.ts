@@ -35,7 +35,7 @@ import crp from "../assets/jobs/crp.png";
 import bsm from "../assets/jobs/bsm.png";
 import arm from "../assets/jobs/arm.png";
 import gsm from "../assets/jobs/gsm.png";
-import ltW from "../assets/jobs/ltW.png";
+import ltw from "../assets/jobs/ltw.png";
 import wvr from "../assets/jobs/wvr.png";
 import alc from "../assets/jobs/alc.png";
 import cul from "../assets/jobs/cul.png";
