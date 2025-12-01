@@ -162,6 +162,7 @@ html, body { height: 100%; min-height: 100dvh; font-family: Geneva, Verdana, san
 .meta-text {
   font-size: 1.25rem;
   color: var(--DutyMeta-Color);
+  min-width: fit-content;
 }
 
 .meta-icon {
