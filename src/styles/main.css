@@ -9,9 +9,11 @@
   --PF-Dark-Base: #313031;
   --PF-Dark-Highlight: #3c3b3c;
 
+  --Cob-Enjoyers-Color: #ffa4fe;
   --PF-Dark-Base-CobEnjoyer: #6f536f;
   --PF-Dark-Highlight-CobEnjoyer: #775b77;
 
+  --Cob-Friends-Color: #bbfcff;
   --PF-Dark-Base-CobFriend: #5a6c6e;
   --PF-Dark-Highlight-CobFriend: #617475;
 
@@ -30,6 +32,7 @@
 
 html {background-color: var(--Background);} 
 html, body { height: 100%; min-height: 100dvh; font-family: Geneva, Verdana, sans-serif; }
+a { color: #63a2c0; text-decoration: underline; }
 
 /* Fallback to fully center the first wrapper in case Tailwind utilities are not present */
 .page-center {
@@ -218,6 +221,22 @@ html, body { height: 100%; min-height: 100dvh; font-family: Geneva, Verdana, san
   opacity: 0.5;
 
   color: var(--DutyDescription-Color);
+}
+
+.move-across {
+  margin-left: auto;
+}
+
+.footer-last {
+  margin-left: 0.3rem;
+}
+
+.cob-enjoyers-color {
+  color: var(--Cob-Enjoyers-Color);
+}
+
+.cob-friends-color {
+  color: var(--Cob-Friends-Color);
 }
 
 .cob-enjoyers-base {
