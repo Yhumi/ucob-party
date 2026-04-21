@@ -48,14 +48,20 @@ const ControlComponent = () => {
   return (
     <div className="control-panel-container">
       <FormGroup row className="control-section">
-        <TextField
-          value={listingSearch}
-          onChange={updateListingSearch}
-          label="Search listings"
-          size="small"
-          className="listing-search-input"
-          variant="outlined"
-        />
+        <div className="listing-search-container">
+          <TextField
+            value={listingSearch}
+            onChange={updateListingSearch}
+            label="Search listings"
+            className="listing-search-input"
+            size="small"
+            variant="outlined"
+          />
+        </div>
+        
+      </FormGroup>
+
+      <FormGroup row className="control-section">
         <FormControlLabel className="form-control-text" control={<Switch checked={cobEnjoyersChecked} onChange={updateCobEnjoyers} color="secondary" />} label="Cob Enjoyers" data-tooltip-id="enjoyers" data-tooltip-content="PFs hosted by Certified Cob Enjoyers™" data-tooltip-place="top" />
         <Tooltip id="enjoyers" />
         <FormControlLabel className="form-control-text" control={<Switch checked={cobFriendsChecked} onChange={updateCobFriends} />} label="Cob Friends" data-tooltip-id="friends" data-tooltip-content="PFs hosted by friends of the Cob Enjoyers" data-tooltip-place="top" />
@@ -63,7 +69,7 @@ const ControlComponent = () => {
         <FormControlLabel className="form-control-text" control={<Switch checked={othersChecked} onChange={updateOthers} />} label="Others" data-tooltip-id="others" data-tooltip-content="PFs hosted by others" data-tooltip-place="top" />
         <Tooltip id="others" />
       </FormGroup>
-
+ 
       <FormGroup row className="control-section">
         <FormControlLabel className="form-control-text" control={<Switch checked={highlighting} onChange={updateHighlighting} color="secondary" />} label="Show Highlighting" />
       </FormGroup>
