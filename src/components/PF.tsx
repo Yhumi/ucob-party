@@ -25,7 +25,7 @@ import server from "../assets/icons/server.svg";
 interface Props { page: number }
 let string : string = "Opened";
 
-const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers, listingSearch: string) : PageResponse<PFListing> => {
+const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers: boolean, listingSearch: string) : PageResponse<PFListing> => {
   let dateFiltered : PageResponse<PFListing> = { data: [] };
 
   //Filter out listings older than 10 minutes
@@ -59,8 +59,8 @@ const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: Kno
 
   return {
     data: hostFiltered.data.filter(listing =>
-      listing.tags.toLowerCase().includes(searchFilter) ||
-      listing.description.toLowerCase().includes(searchFilter)
+      listing.tags?.toLowerCase().includes(searchFilter) ||
+      listing.description?.toLowerCase().includes(searchFilter)
     ),
   };
 }
