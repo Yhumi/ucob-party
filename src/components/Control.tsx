@@ -1,5 +1,5 @@
 import FormGroup from '@mui/material/FormGroup';
-import { listingSearchState, roleFilterState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from '../services/controlStore';
+import { listingSearchState, roleFilterState, ALL_FILTER_ROLES, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from '../services/controlStore';
 import Switch from '@mui/material/Switch';
 import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ const roleNames: Record<Role, string> = {
   [Role.DPS]: "DPS",
 };
 
-const ALL_ROLES = [Role.Tank, Role.Healer, Role.DPS];
+const ALL_ROLES = ALL_FILTER_ROLES;
 
 const ControlComponent = () => {
   const [cobEnjoyersChecked , setCobEnjoyersChecked] = useState(showCobEnjoyersState.value);
@@ -85,7 +85,8 @@ const ControlComponent = () => {
             input={<OutlinedInput label="Roles" />}
             renderValue={(selected) => {
               const roles = selected as Role[];
-              if (roles.length === 0 || roles.length === ALL_ROLES.length) return "All Roles";
+              if (roles.length === 0) return "No Roles";
+              if (roles.length === ALL_ROLES.length) return "All Roles";
               return roles.map(r => roleNames[r]).join(", ");
             }}
           >

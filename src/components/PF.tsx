@@ -3,7 +3,7 @@ import { HostType, JobIcons, Role, type KnownPFHosts, type PageResponse, type PF
 import { Tooltip } from 'react-tooltip'
 import { useStore } from '@nanostores/react';
 
-import { listingSearchState, roleFilterState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
+import { listingSearchState, roleFilterState, ALL_FILTER_ROLES, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
 
 //#region Roles
 import tank from "../assets/roles/tank.png";
@@ -65,8 +65,7 @@ const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: Kno
   // Role filter: skip when all roles are selected (preserves show-all default behaviour).
   // A listing passes when it has at least one unfilled slot whose role intersects the selection.
   // Unfilled "Any" slots always match a non-empty selection.
-  const ALL_ROLE_COUNT = 3; // Tank, Healer, DPS
-  if (roleFilter.length > 0 && roleFilter.length < ALL_ROLE_COUNT) {
+  if (roleFilter.length > 0 && roleFilter.length < ALL_FILTER_ROLES.length) {
     return {
       data: textFiltered.data.filter(listing =>
         listing.party.some(slot =>
