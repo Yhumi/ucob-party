@@ -1,9 +1,19 @@
 import FormGroup from '@mui/material/FormGroup';
-import { listingSearchState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from '../services/controlStore';
+import { listingSearchState, roleFilterState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from '../services/controlStore';
 import Switch from '@mui/material/Switch';
-import { FormControlLabel, TextField } from '@mui/material';
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Tooltip } from 'react-tooltip';
+import { Role } from '../types/pfListings';
+
+const roleNames: Record<Role, string> = {
+  [Role.Any]: "Any",
+  [Role.Tank]: "Tank",
+  [Role.Healer]: "Healer",
+  [Role.DPS]: "DPS",
+};
+
+const ALL_ROLES = [Role.Tank, Role.Healer, Role.DPS];
 
 const ControlComponent = () => {
   const [cobEnjoyersChecked , setCobEnjoyersChecked] = useState(showCobEnjoyersState.value);
@@ -11,6 +21,7 @@ const ControlComponent = () => {
   const [othersChecked , setOthersChecked] = useState(showOthersState.value);
   const [highlighting , setHighlight] = useState(showHighlightingState.value);
   const [listingSearch , setListingSearch] = useState(listingSearchState.value);
+  const [roleFilter, setRoleFilter] = useState<Role[]>(roleFilterState.value);
 
   const updateCobEnjoyers = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Updating Cob Enjoyers to:", event.target.checked);
@@ -45,6 +56,12 @@ const ControlComponent = () => {
     listingSearchState.set(event.target.value);
   }
 
+  const updateRoleFilter = (event: SelectChangeEvent<Role[]>) => {
+    const value = event.target.value as Role[];
+    setRoleFilter(value);
+    roleFilterState.set(value);
+  }
+
   return (
     <div className="control-panel-container">
       <FormGroup row className="control-section">
@@ -58,7 +75,28 @@ const ControlComponent = () => {
             variant="outlined"
           />
         </div>
-        
+
+        <FormControl size="small" className="listing-role-select">
+          <InputLabel>Roles</InputLabel>
+          <Select
+            multiple
+            value={roleFilter}
+            onChange={updateRoleFilter}
+            input={<OutlinedInput label="Roles" />}
+            renderValue={(selected) => {
+              const roles = selected as Role[];
+              if (roles.length === 0 || roles.length === ALL_ROLES.length) return "All Roles";
+              return roles.map(r => roleNames[r]).join(", ");
+            }}
+          >
+            {ALL_ROLES.map(role => (
+              <MenuItem key={role} value={role}>
+                <Checkbox checked={roleFilter.includes(role)} />
+                {roleNames[role]}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </FormGroup>
 
       <FormGroup row className="control-section">

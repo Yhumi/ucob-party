@@ -3,7 +3,7 @@ import { HostType, JobIcons, Role, type KnownPFHosts, type PageResponse, type PF
 import { Tooltip } from 'react-tooltip'
 import { useStore } from '@nanostores/react';
 
-import { listingSearchState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
+import { listingSearchState, roleFilterState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
 
 //#region Roles
 import tank from "../assets/roles/tank.png";
@@ -25,7 +25,7 @@ import server from "../assets/icons/server.svg";
 interface Props { page: number }
 let string : string = "Opened";
 
-const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers: boolean, listingSearch: string) : PageResponse<PFListing> => {
+const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers: boolean, listingSearch: string, roleFilter: Role[]) : PageResponse<PFListing> => {
   let dateFiltered : PageResponse<PFListing> = { data: [] };
 
   //Filter out listings older than 10 minutes
@@ -55,14 +55,31 @@ const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: Kno
   }
 
   const searchFilter = listingSearch.trim().toLowerCase();
-  if (!searchFilter) return hostFiltered;
-
-  return {
+  const textFiltered = !searchFilter ? hostFiltered : {
     data: hostFiltered.data.filter(listing =>
       listing.tags?.toLowerCase().includes(searchFilter) ||
       listing.description?.toLowerCase().includes(searchFilter)
     ),
   };
+
+  // Role filter: skip when all roles are selected (preserves show-all default behaviour).
+  // A listing passes when it has at least one unfilled slot whose role intersects the selection.
+  // Unfilled "Any" slots always match a non-empty selection.
+  const ALL_ROLE_COUNT = 3; // Tank, Healer, DPS
+  if (roleFilter.length > 0 && roleFilter.length < ALL_ROLE_COUNT) {
+    return {
+      data: textFiltered.data.filter(listing =>
+        listing.party.some(slot =>
+          !slot.Filled && (
+            (slot.Roles.Roles as Role[]).includes(Role.Any) ||
+            (slot.Roles.Roles as Role[]).some(r => roleFilter.includes(r))
+          )
+        )
+      ),
+    };
+  }
+
+  return textFiltered;
 }
 
 const pfComponent = ({ page } : Props) => {
@@ -75,6 +92,7 @@ const pfComponent = ({ page } : Props) => {
   const showCobFriends = useStore(showCobFriendsState);
   const showOthers = useStore(showOthersState); 
   const listingSearch = useStore(listingSearchState);
+  const roleFilter = useStore(roleFilterState);
 
   const showHighlighting = useStore(showHighlightingState);
 
@@ -95,7 +113,7 @@ const pfComponent = ({ page } : Props) => {
     if (knownPFHosts.length == 0) return;
     if (curFetchTime - lastFetch < 15 * 1000) {
       console.log("Fetched recently, just updating filtering.")
-      let dateFilteredListings = dateFilterListings(allListings, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch);
+      let dateFilteredListings = dateFilterListings(allListings, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch, roleFilter);
       setListings(dateFilteredListings);
       return;
     };
@@ -110,7 +128,7 @@ const pfComponent = ({ page } : Props) => {
         string = "Parsed";
         console.log(y.data);
 
-        let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch);
+        let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch, roleFilter);
 
         setLastFetch(curFetchTime);
         setAllListings(y.data);
@@ -131,7 +149,7 @@ const pfComponent = ({ page } : Props) => {
           string = "Parsed";
           console.log(y.data);
 
-          let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch);
+          let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch, roleFilter);
 
           setLastFetch(curFetchTime);
           setAllListings(y.data);
@@ -146,7 +164,7 @@ const pfComponent = ({ page } : Props) => {
       clearInterval(interval);
     }
 
-  }, [knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch]);
+  }, [knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch, roleFilter]);
 
   return (
     <div className="pf-listings-container">

@@ -232,6 +232,38 @@ a { color: #63a2c0; text-decoration: underline; }
   border-color: var(--DutyTitle-Color) !important;
 }
 
+.listing-role-select {
+  min-width: 10rem;
+}
+
+.listing-role-select .MuiSelect-select {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select .MuiSelect-icon {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select label {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select label.Mui-focused {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select fieldset {
+  border-color: var(--PF-Border);
+}
+
+.listing-role-select:hover fieldset {
+  border-color: var(--DutyTitle-Color) !important;
+}
+
+.listing-role-select .Mui-focused fieldset {
+  border-color: var(--DutyTitle-Color) !important;
+}
+
 .footer-panel-container {
   width: 100%;
   justify-content: space-between;
