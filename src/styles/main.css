@@ -180,17 +180,30 @@ a { color: #63a2c0; text-decoration: underline; }
 
 .control-panel-container {
   width: 100%;
-  justify-content: space-between;
   align-items: center;
 
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.control-section-left {
+  justify-self: start;
+}
+
+.control-section-middle {
+  justify-self: center;
+}
+
+.control-section-right {
+  justify-self: end;
 }
 
 .control-section {
   display: flex;
   flex-direction: row;
   align-items: center;
+  row-gap: 0.5rem;
+  column-gap: 0.25rem;
 
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
@@ -202,6 +215,104 @@ a { color: #63a2c0; text-decoration: underline; }
 .form-control-text { 
   color: var(--DutyMeta-Color);
   font-size: 1.1rem;
+}
+
+.listing-search-container {
+  padding-right: 0.5rem;
+}
+
+.listing-search-input input {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-search-input label {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-search-input label.Mui-focused {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-search-input fieldset {
+  border: 2px solid var(--PF-Border);
+}
+
+.listing-search-input:hover fieldset {
+  border-color: var(--DutyTitle-Color) !important;
+}
+
+.listing-search-input .Mui-focused fieldset {
+  border-color: var(--DutyTitle-Color) !important;
+}
+
+.listing-role-select {
+  width: 9rem;
+  min-width: 9rem;
+  max-width: 9rem;
+  flex: 0 0 9rem;
+}
+
+.listing-role-select .MuiSelect-select {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select .MuiSelect-icon {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select label {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select label.Mui-focused {
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-select fieldset {
+  border: 2px solid var(--PF-Border);
+}
+
+.listing-role-select:hover fieldset {
+  border-color: var(--DutyTitle-Color) !important;
+}
+
+.listing-role-select .Mui-focused fieldset {
+  border-color: var(--DutyTitle-Color) !important;
+}
+
+.listing-role-menu-paper {
+  background-color: var(--PF-Dark-Base) !important;
+  border: 2px solid var(--PF-Border);
+  color: var(--DutyMeta-Color);
+}
+
+.listing-role-menu-list {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.listing-role-menu-item {
+  color: var(--DutyMeta-Color) !important;
+}
+
+.listing-role-menu-item:hover {
+  background-color: var(--PF-Dark-Highlight) !important;
+}
+
+.listing-role-menu-item.Mui-selected {
+  background-color: var(--PF-Dark-Base) !important;
+}
+
+.listing-role-menu-item.Mui-selected:hover {
+  background-color: var(--PF-Dark-Highlight) !important;
+}
+
+.listing-role-menu-checkbox {
+  color: var(--DutyMeta-Color) !important;
+}
+
+.listing-role-menu-checkbox.Mui-checked {
+  color: var(--DutyTitle-Color) !important;
 }
 
 .footer-panel-container {
