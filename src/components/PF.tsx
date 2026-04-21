@@ -3,7 +3,7 @@ import { HostType, JobIcons, Role, type KnownPFHosts, type PageResponse, type PF
 import { Tooltip } from 'react-tooltip'
 import { useStore } from '@nanostores/react';
 
-import { showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
+import { listingSearchState, showCobEnjoyersState, showCobFriendsState, showHighlightingState, showOthersState } from "../services/controlStore";
 
 //#region Roles
 import tank from "../assets/roles/tank.png";
@@ -25,7 +25,7 @@ import server from "../assets/icons/server.svg";
 interface Props { page: number }
 let string : string = "Opened";
 
-const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers) : PageResponse<PFListing> => {
+const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: KnownPFHosts[], showCobEnjoyers: boolean, showCobFriends: boolean, showOthers, listingSearch: string) : PageResponse<PFListing> => {
   let dateFiltered : PageResponse<PFListing> = { data: [] };
 
   //Filter out listings older than 10 minutes
@@ -54,7 +54,15 @@ const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: Kno
     hostFiltered.data.push(...dateFiltered.data.filter(x => !knownPFHosts.filter(x => x.HostType == HostType.CobEnjoyer).map(x => x.Username).includes(x.creator) && !knownPFHosts.filter(x => x.HostType == HostType.CobFriend).map(x => x.Username).includes(x.creator)));
   }
 
-  return hostFiltered;
+  const searchFilter = listingSearch.trim().toLowerCase();
+  if (!searchFilter) return hostFiltered;
+
+  return {
+    data: hostFiltered.data.filter(listing =>
+      listing.tags.toLowerCase().includes(searchFilter) ||
+      listing.description.toLowerCase().includes(searchFilter)
+    ),
+  };
 }
 
 const pfComponent = ({ page } : Props) => {
@@ -66,6 +74,7 @@ const pfComponent = ({ page } : Props) => {
   const showCobEnjoyers = useStore(showCobEnjoyersState);
   const showCobFriends = useStore(showCobFriendsState);
   const showOthers = useStore(showOthersState); 
+  const listingSearch = useStore(listingSearchState);
 
   const showHighlighting = useStore(showHighlightingState);
 
@@ -86,7 +95,7 @@ const pfComponent = ({ page } : Props) => {
     if (knownPFHosts.length == 0) return;
     if (curFetchTime - lastFetch < 15 * 1000) {
       console.log("Fetched recently, just updating filtering.")
-      let dateFilteredListings = dateFilterListings(allListings, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+      let dateFilteredListings = dateFilterListings(allListings, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch);
       setListings(dateFilteredListings);
       return;
     };
@@ -101,7 +110,7 @@ const pfComponent = ({ page } : Props) => {
         string = "Parsed";
         console.log(y.data);
 
-        let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+        let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch);
 
         setLastFetch(curFetchTime);
         setAllListings(y.data);
@@ -122,7 +131,7 @@ const pfComponent = ({ page } : Props) => {
           string = "Parsed";
           console.log(y.data);
 
-          let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers);
+          let dateFilteredListings = dateFilterListings(y.data, knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch);
 
           setLastFetch(curFetchTime);
           setAllListings(y.data);
@@ -137,7 +146,7 @@ const pfComponent = ({ page } : Props) => {
       clearInterval(interval);
     }
 
-  }, [knownPFHosts, showCobEnjoyers, showCobFriends, showOthers]);
+  }, [knownPFHosts, showCobEnjoyers, showCobFriends, showOthers, listingSearch]);
 
   return (
     <div className="pf-listings-container">

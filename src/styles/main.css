@@ -204,6 +204,11 @@ a { color: #63a2c0; text-decoration: underline; }
   font-size: 1.1rem;
 }
 
+.listing-search-input {
+  min-width: 16rem;
+  margin-right: 0.75rem;
+}
+
 .footer-panel-container {
   width: 100%;
   justify-content: space-between;
