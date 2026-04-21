@@ -9,7 +9,7 @@ const ControlComponent = () => {
   const [cobEnjoyersChecked , setCobEnjoyersChecked] = useState(showCobEnjoyersState.value);
   const [cobFriendsChecked , setCobFriendsChecked] = useState(showCobFriendsState.value);
   const [othersChecked , setOthersChecked] = useState(showOthersState.value);
-  const [highlighting , setHighlight] = useState(showOthersState.value);
+  const [highlighting , setHighlight] = useState(showHighlightingState.value);
   const [listingSearch , setListingSearch] = useState(listingSearchState.value);
 
   const updateCobEnjoyers = (event: React.ChangeEvent<HTMLInputElement>) => {
