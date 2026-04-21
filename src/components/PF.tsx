@@ -58,7 +58,8 @@ const dateFilterListings = (listings: PageResponse<PFListing>, knownPFHosts: Kno
   const textFiltered = !searchFilter ? hostFiltered : {
     data: hostFiltered.data.filter(listing =>
       listing.tags?.toLowerCase().includes(searchFilter) ||
-      listing.description?.toLowerCase().includes(searchFilter)
+      listing.description?.toLowerCase().includes(searchFilter) ||
+      listing.creator?.toLowerCase().includes(searchFilter)
     ),
   };
 
