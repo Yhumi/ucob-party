@@ -1,0 +1,172 @@
+{
+    "data": [
+        {
+            "datacenter": "Aether",
+            "duty": "The Unending Coil of Bahamut (Ultimate)",
+            "tags": "",
+            "description": "test",
+            "creator": "Vampire Shawty @ Midgardsormr",
+            "world": "Midgardsormr",
+            "expires": "in an hour",
+            "updated": "a minute ago",
+            "party": [
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": true
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            1
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            1
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            2
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            2
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                }
+            ]
+        },
+        {
+            "datacenter": "Aether",
+            "duty": "The Unending Coil of Bahamut (Ultimate)",
+            "tags": "",
+            "description": "None",
+            "creator": "Mio Koito @ Sargatanas",
+            "world": "Midgardsormr",
+            "expires": "in an hour",
+            "updated": "a minute ago",
+            "party": [
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 16,
+                    "Filled": true
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            1
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            1
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            2
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            2
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                },
+                {
+                    "Roles": {
+                        "Roles": [
+                            3
+                        ]
+                    },
+                    "Job": 0,
+                    "Filled": false
+                }
+            ]
+        }
+    ]
+}
