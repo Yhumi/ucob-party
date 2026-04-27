@@ -96,8 +96,8 @@ export const JobIcons : Record<number, ImageMetadata> = {
   
   5: sch,
   6: sge,
-  7: ast,
-  8: whm,
+  7: whm,
+  8: ast,
 
   9: sam,
   10: drg,
